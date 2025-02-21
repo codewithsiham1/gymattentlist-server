@@ -32,7 +32,12 @@ async function run() {
         res.send(result)
     })
     app.get('/schedules', async (req, res) => {
-        const result = await gymschedule.find().toArray();
+      const {searchParams}=req.query;
+      let option={};
+      if(searchParams){
+        option={title:{$regex:searchParams,$options:'i'}} ;
+      }
+        const result = await gymschedule.find(option).toArray();
         res.send(result);
     });
     app.delete('/schedules/:id',async(req,res)=>{
